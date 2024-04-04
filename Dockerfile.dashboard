@@ -1,0 +1,14 @@
+FROM python:3.8-slim
+WORKDIR /app
+
+# Копирование файла зависимостей в рабочую директорию
+COPY requirements.txt ./requirements.txt
+
+# Установка зависимостей
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Копирование содержимого папки dashboard в рабочую директорию
+COPY ./dashboard /app
+
+# Запуск Streamlit приложения
+CMD ["streamlit", "run", "app.py", "--server.address=0.0.0.0", "--server.port", "8501"]

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streamlit-dashboard
+  labels:
+    app: streamlit-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamlit-dashboard
+  template:
+    metadata:
+      labels:
+        app: streamlit-dashboard
+    spec:
+      containers:
+      - name: streamlit-dashboard
+        image: dashboard:latest  # Убедитесь, что образ с таким тегом существует в вашем локальном реестре Docker
+        ports:
+        - containerPort: 8501
+        imagePullPolicy: IfNotPresent
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: streamlit-dashboard-service
+spec:
+  type: NodePort  # Изменено с LoadBalancer на NodePort для локального доступа
+  ports:
+  - port: 8501
+    targetPort: 8501
+    nodePort: 30023  # Вы можете выбрать любой свободный порт выше 30000
+  selector:
+    app: streamlit-dashboard
