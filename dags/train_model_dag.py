@@ -13,17 +13,16 @@ with DAG(
         'train_model_daily',
         default_args=default_args,
         schedule_interval='@daily',
-        catchup=False,  # Добавлено, чтобы предотвратить запуск задач за прошедшие периоды
-) as dag:
-    # Определение задачи DockerOperator
+        catchup=False,  
+) as dag: 
     train_model = DockerOperator(
         task_id='train_model',
-        image='dashboard:latest',  # Убедитесь, что образ доступен локально или в реестре, откуда его можно загрузить
+        image='dashboard:latest',  
         api_version='auto',
         auto_remove=True,
-        command='/bin/bash -c "python add_train.py"',        # Указываем правильный путь к скрипту в контейнере
-        docker_url='unix://var/run/docker.sock',  # Указываем путь к сокету Docker Daemon
-        network_mode='bridge',  # Можно изменить в соответствии с требованиями к сети
+        command='/bin/bash -c "python add_train.py"',   
+        docker_url='unix://var/run/docker.sock', 
+        network_mode='bridge',  
 
     )
 
