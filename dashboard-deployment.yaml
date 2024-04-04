@@ -16,10 +16,10 @@ spec:
     spec:
       containers:
       - name: streamlit-dashboard
-        image: dashboard:latest  # Убедитесь, что образ с таким тегом существует в вашем локальном реестре Docker
+        image: dashboard:latest 
         ports:
         - containerPort: 8501
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: IfNotPresent # Только так оказывается можно подтянуть образ из локального репозитория для Kind, а не DockerHub
 
 ---
 apiVersion: v1
@@ -27,10 +27,10 @@ kind: Service
 metadata:
   name: streamlit-dashboard-service
 spec:
-  type: NodePort  # Изменено с LoadBalancer на NodePort для локального доступа
+  type: NodePort 
   ports:
   - port: 8501
     targetPort: 8501
-    nodePort: 30023  # Вы можете выбрать любой свободный порт выше 30000
+    nodePort: 30023  
   selector:
     app: streamlit-dashboard
